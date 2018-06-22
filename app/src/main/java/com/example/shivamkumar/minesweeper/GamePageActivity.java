@@ -22,6 +22,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     public static int y=8;
     public static int count=0;
     public static int requiredCount;
+
     int a[][];
     int b[][];
     int cc[][];
@@ -33,6 +34,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     MineButton board[][];
     Random random= new Random();
     int mineNum=16;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +135,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
 
         if(fff){
-            Toast.makeText(this,"Game Over",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Game Over",Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -171,7 +173,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void gameover() {
-           Toast.makeText(this,"YOU Win",Toast.LENGTH_SHORT).show();
+           Toast.makeText(this,"YOU Win",Toast.LENGTH_LONG).show();
        //   revealAll();
     }
 
@@ -227,6 +229,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     }
+
     private void setMines(int r, int c) {
         int z=mineNum;
         while (z>0){
@@ -234,6 +237,8 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
 
             int colNO=random.nextInt(y);
             if(rowNO==r&&colNO==c)
+                continue;
+            if((rowNO==r-1&&colNO==c-1)||(rowNO==r-1&&colNO==c)||(rowNO==r-1&&colNO==c+1)||(rowNO==r&&colNO==c-1)||(rowNO==r&&colNO==c+1)||(rowNO==r+1&&colNO==c-1)||(rowNO==r+1&&colNO==c)||(rowNO==r+1&&colNO==c+1))
                 continue;
             if(a[rowNO][colNO]==1)
                 continue;
