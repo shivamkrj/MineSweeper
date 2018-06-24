@@ -17,11 +17,12 @@ public class HighScore extends AppCompatActivity {
         TextView textView1= findViewById(R.id.textView2);
         TextView textView2= findViewById(R.id.textView3);
         TextView textView3= findViewById(R.id.textView4);
+        TextView textView=findViewById(R.id.textView5);
+        textView.setVisibility(View.GONE);
 
         String s1=sharedPreferences.getString("HIGHSCORE1",null);
         String s2=sharedPreferences.getString("HIGHSCORE2",null);
         String s3=sharedPreferences.getString("HIGHSCORE3",null);
-
 
         String n1=sharedPreferences.getString("PLAYER1",null);
         String n2=sharedPreferences.getString("PLAYER2",null);
@@ -30,6 +31,9 @@ public class HighScore extends AppCompatActivity {
         if(s1!=null){
             textView1.setVisibility(View.VISIBLE);
             textView1.setText(s1 + "  "+n1);
+
+        }else{
+            textView.setVisibility(View.VISIBLE);
         }
         if(s2!=null){
             textView2.setVisibility(View.VISIBLE);
