@@ -19,7 +19,10 @@
         <activity
             android:name=".GamePageActivity"
             android:theme="@style/my_style"></activity>
-        <activity android:name=".HighScore"></activity>
+        <activity android:name=".HighScore"
+            android:theme="@style/HighScore"
+            android:label="Highscore">
+        </activity>
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:textColor="#ffffff"
         android:text="00:00:00"
+        android:textSize="30dp"
         android:id="@+id/timerTextView"/>
 
 

@@ -34,7 +34,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     int b[][];
     int cc[][];
     boolean fff=false;
-    String player_name;
+    String player_name="";
     int m[];
     int n[];
     int xx=0;
@@ -173,6 +173,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         }
 
         MineButton button= (MineButton) view;
+        button.isClicked=true;
 
         if(button.mineFlag)
         {
@@ -252,34 +253,47 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         String p2 = sharedPreferences.getString("HIGHSCORE2",null);
         String p3 = sharedPreferences.getString("HIGHSCORE3",null);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String n1 = sharedPreferences.getString("PLAYER1",null);
+        String n2 = sharedPreferences.getString("PLAYER2",null);
+        String n3 = sharedPreferences.getString("PLAYER3",null);
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if(p1!=null&&p2!=null&&p3!=null){
             if(highScoreComparer(xxx,p1)){
-                p3=p2;
-                p2=p1;
-                p1=xxx;
+                p3=p2;n3=n2;
+                p2=p1;n2=n1;
+                p1=xxx;n1=player_name;
             }else if(highScoreComparer(xxx,p2)){
-                p3=p2;
-                p2=xxx;
+                p3=p2;n3=n2;
+                p2=xxx;n2=player_name;
             }else if(highScoreComparer(xxx,p3)){
-                p3=xxx;
+                p3=xxx;n3=player_name;
             }
 
             editor.putString("HIGHSCORE1",p1);
             editor.putString("HIGHSCORE2",p2);
             editor.putString("HIGHSCORE3",p3);
+
+            editor.putString("PLAYER1",n1);
+            editor.putString("PLAYER2",n2);
+            editor.putString("PLAYER3",n3);
 
         }else if(p1!=null&&p2!=null){
             if(highScoreComparer(xxx,p1)){
                 p3=p2;p2=p1;p1=xxx;
+                n3=n2;n2=n1;n1=player_name;
             }else if(highScoreComparer(xxx,p2)){
                 p3=p2;p2=xxx;
+                n3=n2;n2=player_name;
             }
             editor.putString("HIGHSCORE1",p1);
             editor.putString("HIGHSCORE2",p2);
             editor.putString("HIGHSCORE3",p3);
+
+            editor.putString("PLAYER1",n1);
+            editor.putString("PLAYER2",n2);
+            editor.putString("PLAYER3",n3);
 
         }else if(p1!=null){
             if(highScoreComparer(xxx,p1)){
@@ -287,11 +301,15 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
             }
             editor.putString("HIGHSCORE1",p1);
             editor.putString("HIGHSCORE2",p2);
+
+            editor.putString("PLAYER1",n1);
+            editor.putString("PLAYER2",n2);
         }else{
             p1=xxx;
+            n1=player_name;
             editor.putString("HIGHSCORE1",p1);
+            editor.putString("PLAYER1",n1);
         }
-        editor.putString("PLAYER_NAME",player_name);
         editor.apply();
 
         Intent intent= new Intent(this,HighScore.class);
