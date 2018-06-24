@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //this is onCreate function automatically Overriden
+
 
 
 
@@ -51,8 +53,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void game(View view){
+
+        EditText editText =findViewById(R.id.editText);
+        String name= editText.getText().toString();
         Intent intent = new Intent(this,GamePageActivity.class);
         intent.putExtra("level_set",x);
+        intent.putExtra("name",name);
         startActivity(intent);
+
     }
 }

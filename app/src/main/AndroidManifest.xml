@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GamePageActivity"></activity>
+        <activity
+            android:name=".GamePageActivity"
+            android:theme="@style/my_style"></activity>
+        <activity android:name=".HighScore"></activity>
     </application>
 
 </manifest>

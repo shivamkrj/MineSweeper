@@ -1,15 +1,22 @@
 package com.example.shivamkumar.minesweeper;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,11 +29,12 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     public static int y=8;
     public static int count=0;
     public static int requiredCount;
-
+    TextView timer;
     int a[][];
     int b[][];
     int cc[][];
     boolean fff=false;
+    String player_name;
     int m[];
     int n[];
     int xx=0;
@@ -34,6 +42,13 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     MineButton board[][];
     Random random= new Random();
     int mineNum=16;
+    private long startTime = 0L;
+    private Handler customHandler = new Handler();
+    long timeInMilliseconds = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
+    SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +56,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_game_page);
         Intent intent=getIntent();
         xx= intent.getIntExtra("level_set",0);
+        player_name=intent.getStringExtra("name");
         if(xx>0){
             if(xx==3){
                 x=12;y=9;mineNum=18;setBoard();
@@ -50,6 +66,12 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
                 x=8;y=6;mineNum=8;setBoard();
             }
         }
+
+        sharedPreferences =getSharedPreferences("my_shared_pref",MODE_PRIVATE);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle(null);
+
         setBoard();
     }
 
@@ -62,6 +84,13 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id= item.getItemId();
+        timerPause();
+        startTime = 0L;
+        timeInMilliseconds = 0L;
+        timeSwapBuff = 0L;
+        updatedTime = 0L;
+        timer.setText("00:00:00");
+
         if(id==R.id.reset){
             setBoard();
         }else if(id==R.id.hard){
@@ -79,6 +108,9 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         count=0;
         fff=false;
         firstMove=true;
+        timer=findViewById(R.id.timerTextView);
+        if(xx==0)
+            xx=1;
         mineNum=mineNum+random.nextInt(xx);
         requiredCount=x*y-mineNum;
         cc=new int[x][y];
@@ -136,6 +168,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
 
         if(fff){
             Toast.makeText(this,"Game Over",Toast.LENGTH_LONG).show();
+            timerPause();
             return;
         }
 
@@ -149,12 +182,14 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
 
 
         if(firstMove){
+
             int r=button.row;
             int c=button.column;
             setMines(r,c);
           //  Toast.makeText(this,"first move",Toast.LENGTH_SHORT).show();
             firstMove = false;
             showCurrent(r,c);
+            timerStart();
             return;
         }
         if(button.bValue==-2)
@@ -164,6 +199,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
             fff=true;
 
             Toast.makeText(this,"GameOver",Toast.LENGTH_SHORT).show();
+            timerPause();
             revealAll();
             return;
         }
@@ -172,11 +208,116 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         showCurrent(r,c);
     }
 
-    private void gameover() {
-           Toast.makeText(this,"YOU Win",Toast.LENGTH_LONG).show();
-       //   revealAll();
+    private void timerStart() {
+
+        startTime = SystemClock.uptimeMillis();
+        customHandler.postDelayed(updateTimerThread, 0);
+
+    }
+    private void timerPause(){
+
+        timeSwapBuff += timeInMilliseconds;
+        customHandler.removeCallbacks(updateTimerThread);
     }
 
+    private Runnable updateTimerThread = new Runnable() {
+        public void run() {
+            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+            int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int milliseconds = (int) (updatedTime % 1000);
+            timer.setText("" + mins + ":"
+                            + String.format("%02d", secs) + ":"
+                            + String.format("%03d", milliseconds));
+            customHandler.postDelayed(this, 0);
+        }
+    };
+
+
+    private void gameover() {
+           Toast.makeText(this,"YOU Win",Toast.LENGTH_LONG).show();
+           timerPause();
+           saveGameScore();
+           revealAll();
+    }
+
+    private void saveGameScore() {
+        String xxx= timer.getText().toString();
+      //  String highScore=xxx;
+        Toast.makeText(this,xxx,Toast.LENGTH_SHORT).show();
+
+        String p1 = sharedPreferences.getString("HIGHSCORE1",null);
+        String p2 = sharedPreferences.getString("HIGHSCORE2",null);
+        String p3 = sharedPreferences.getString("HIGHSCORE3",null);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+        if(p1!=null&&p2!=null&&p3!=null){
+            if(highScoreComparer(xxx,p1)){
+                p3=p2;
+                p2=p1;
+                p1=xxx;
+            }else if(highScoreComparer(xxx,p2)){
+                p3=p2;
+                p2=xxx;
+            }else if(highScoreComparer(xxx,p3)){
+                p3=xxx;
+            }
+
+            editor.putString("HIGHSCORE1",p1);
+            editor.putString("HIGHSCORE2",p2);
+            editor.putString("HIGHSCORE3",p3);
+
+        }else if(p1!=null&&p2!=null){
+            if(highScoreComparer(xxx,p1)){
+                p3=p2;p2=p1;p1=xxx;
+            }else if(highScoreComparer(xxx,p2)){
+                p3=p2;p2=xxx;
+            }
+            editor.putString("HIGHSCORE1",p1);
+            editor.putString("HIGHSCORE2",p2);
+            editor.putString("HIGHSCORE3",p3);
+
+        }else if(p1!=null){
+            if(highScoreComparer(xxx,p1)){
+                p2=p1;p1=xxx;
+            }
+            editor.putString("HIGHSCORE1",p1);
+            editor.putString("HIGHSCORE2",p2);
+        }else{
+            p1=xxx;
+            editor.putString("HIGHSCORE1",p1);
+        }
+        editor.putString("PLAYER_NAME",player_name);
+        editor.apply();
+
+        Intent intent= new Intent(this,HighScore.class);
+        startActivity(intent);
+    }
+
+    private boolean highScoreComparer(String s, String p) {
+
+
+        String y[]=s.split(":");
+        String z[]=p.split(":");
+        int s1=0;
+        for(int i=0;i<y.length;i++){
+            s1*=60;
+            s1+=Integer.parseInt(y[i]);
+        }
+        int s2=0;
+        for(int i=0;i<y.length;i++){
+            s2*=60;
+            s2+=Integer.parseInt(z[i]);
+        }
+        if(s1>s2)
+            return false;
+        else
+            return true;
+    }
 
     public void showCurrent(int r, int c) {
 
