@@ -59,11 +59,11 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         player_name=intent.getStringExtra("name");
         if(xx>0){
             if(xx==3){
-                x=12;y=9;mineNum=18;setBoard();
+                x=12;y=9;mineNum=21;setBoard();
             }else if(xx==2){
-                x=10;y=8;mineNum=14;setBoard();
+                x=10;y=8;mineNum=15;setBoard();
             }else if(xx==1){
-                x=8;y=6;mineNum=8;setBoard();
+                x=8;y=6;mineNum=10;setBoard();
             }
         }
 
@@ -161,6 +161,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
                 board[i][j]=b;
             }
         }
+
     }
 
     @Override
@@ -286,6 +287,8 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
             }else if(highScoreComparer(xxx,p2)){
                 p3=p2;p2=xxx;
                 n3=n2;n2=player_name;
+            }else{
+                p3=xxx;n3=player_name;
             }
             editor.putString("HIGHSCORE1",p1);
             editor.putString("HIGHSCORE2",p2);
@@ -298,6 +301,10 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         }else if(p1!=null){
             if(highScoreComparer(xxx,p1)){
                 p2=p1;p1=xxx;
+                n2=n1;n1=player_name;
+            }else{
+                n2=player_name;
+                p2=xxx;
             }
             editor.putString("HIGHSCORE1",p1);
             editor.putString("HIGHSCORE2",p2);
@@ -323,12 +330,12 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         String z[]=p.split(":");
         int s1=0;
         for(int i=0;i<y.length;i++){
-            s1*=60;
+            s1*=1000;
             s1+=Integer.parseInt(y[i]);
         }
         int s2=0;
         for(int i=0;i<y.length;i++){
-            s2*=60;
+            s2*=1000;
             s2+=Integer.parseInt(z[i]);
         }
         if(s1>s2)
