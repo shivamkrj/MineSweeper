@@ -33,6 +33,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
     int a[][];
     int b[][];
     int cc[][];
+    public static int countFlag=0;
     boolean fff=false;
     String player_name="";
     int m[];
@@ -94,11 +95,11 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         if(id==R.id.reset){
             setBoard();
         }else if(id==R.id.hard){
-            x=12;y=9;mineNum=18;setBoard();
+            x=12;y=9;mineNum=21;setBoard();
         }else if(id==R.id.medium){
-            x=10;y=8;mineNum=14;setBoard();
+            x=10;y=8;mineNum=15;setBoard();
         }else if(id==R.id.easy){
-            x=8;y=6;mineNum=8;setBoard();
+            x=8;y=6;mineNum=10;setBoard();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -106,6 +107,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
 
     public void setBoard() {
         count=0;
+        countFlag=0;
         fff=false;
         firstMove=true;
         timer=findViewById(R.id.timerTextView);
@@ -358,7 +360,7 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
             count++;
             cc[r][c]=1;
         }
-        if(count==requiredCount)
+        if(count==requiredCount&&countFlag==mineNum)
         {
             fff=true;
             gameover();
@@ -463,6 +465,12 @@ public class GamePageActivity extends AppCompatActivity implements View.OnClickL
         if(mineButton.isClicked||fff)
             return true;
         mineButton.setFlag();
+        if(count==requiredCount&&countFlag==mineNum)
+        {
+            fff=true;
+            gameover();
+        }
+
         return true;
     }
 }

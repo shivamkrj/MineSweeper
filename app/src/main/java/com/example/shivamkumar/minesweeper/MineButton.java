@@ -13,9 +13,11 @@ public class MineButton extends AppCompatButton {
     public void setFlag(){
         if(mineFlag){
             mineFlag=false;
+            GamePageActivity.countFlag--;
             setBackgroundColor(getResources().getColor(R.color.lightYellow,null));
         }else {
             mineFlag=true;
+            GamePageActivity.countFlag++;
             setBackgroundDrawable(getResources().getDrawable(R.drawable.flag_icon,null));
         }
     }
