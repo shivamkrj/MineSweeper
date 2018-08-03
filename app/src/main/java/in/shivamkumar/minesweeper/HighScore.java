@@ -1,10 +1,11 @@
-package com.example.shivamkumar.minesweeper;
+package in.shivamkumar.minesweeper;
 
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
 
 public class HighScore extends AppCompatActivity {
 
@@ -29,6 +30,9 @@ public class HighScore extends AppCompatActivity {
 
         if(s1!=null){
             textView1.setVisibility(View.VISIBLE);
+            if(n1==null)
+                textView1.setText(s1 + "");
+            else
             textView1.setText(s1 + "  "+n1);
 
         }else{
@@ -36,11 +40,17 @@ public class HighScore extends AppCompatActivity {
         }
         if(s2!=null){
             textView2.setVisibility(View.VISIBLE);
+            if(n2!=null)
             textView2.setText(s2+ "  "+n2);
+            else
+                textView2.setText(s2+ "");
         }
         if(s3!=null){
             textView3.setVisibility(View.VISIBLE);
-            textView3.setText(s3+ "  "+n3);
+            if(n3!=null)
+                textView3.setText(s3+ "  "+n3);
+            else
+                textView3.setText(s3+"");
         }
 
     }

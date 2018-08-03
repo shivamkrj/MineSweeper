@@ -1,7 +1,8 @@
-package com.example.shivamkumar.minesweeper;
+package in.shivamkumar.minesweeper;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+
 
 public class MineButton extends AppCompatButton {
 

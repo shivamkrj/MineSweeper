@@ -1,4 +1,4 @@
-package com.example.shivamkumar.minesweeper;
+package in.shivamkumar.minesweeper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,16 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.zip.Inflater;
 
 public class GamePageActivity extends AppCompatActivity implements View.OnClickListener,View.OnLongClickListener {
 

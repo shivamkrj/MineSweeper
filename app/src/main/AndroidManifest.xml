@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.shivamkumar.minesweeper">
+    package="in.shivamkumar.minesweeper">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="in.shivamkumar.minesweeper.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,9 +17,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GamePageActivity"
+            android:name="in.shivamkumar.minesweeper.GamePageActivity"
             android:theme="@style/my_style"></activity>
-        <activity android:name=".HighScore"
+        <activity android:name="in.shivamkumar.minesweeper.HighScore"
             android:theme="@style/HighScore"
             android:label="Highscore">
         </activity>
